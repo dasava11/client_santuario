@@ -9,8 +9,6 @@
 //     USERS_URL: 'http://localhost:3011/manager',
 //     DETAIL_SHOPPING_URL: 'http://localhost:3011/detail-shopping',
 //     DETAIL_PURCHASES_URL: 'http://localhost:3011/detail-purchases'
-
-
 //   };
 
   export const environment = {
