@@ -1,0 +1,9 @@
+.bg-custom {
+    background-color: #BFB854;
+  }
+
+.active {
+    font-weight: bold;
+    color: #007bff;
+    text-decoration: underline;
+  }

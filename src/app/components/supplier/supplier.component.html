@@ -1,0 +1,115 @@
+<div class="container mt-4">
+  <h2 class="mb-3">Lista de Proveedores</h2>
+
+  <!-- Formulario de proveedor -->
+  <div class="card mb-3">
+    <div class="card-header">
+      {{ isEditing ? 'Editar Proveedor' : 'Agregar Proveedor' }}
+    </div>
+    <div class="card-body">
+      <form (submit)="saveSupplier()">
+        <div class="row">
+          <div class="col-md-4">
+            <label class="form-label">NIT:</label>
+            <input type="text" class="form-control" [(ngModel)]="supplierForm.nit" name="nit" [disabled]="isEditing"
+              required>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Nombre:</label>
+            <input type="text" class="form-control" [(ngModel)]="supplierForm.name" name="name" required>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Dirección:</label>
+            <input type="text" class="form-control" [(ngModel)]="supplierForm.address" name="address" required>
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-md-4">
+            <label class="form-label">Ciudad:</label>
+            <input type="text" class="form-control" [(ngModel)]="supplierForm.city" name="city" required>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Teléfono:</label>
+            <input type="number" class="form-control" [(ngModel)]="supplierForm.phone" name="phone" required>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Email:</label>
+            <input type="email" class="form-control" [(ngModel)]="supplierForm.email" name="email" required>
+          </div>
+        </div>
+        <div class="form-check mt-2">
+          <input type="checkbox" class="form-check-input" [(ngModel)]="supplierForm.active" name="active">
+          <label class="form-check-label">Activo</label>
+        </div>
+        <button type="submit" class="btn btn-success mt-3">{{ isEditing ? 'Actualizar' : 'Guardar' }}</button>
+        <button type="button" class="btn btn-secondary mt-3 ms-2" (click)="resetForm()">Cancelar</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
+    <!-- Botón Cargar Proveedores -->
+    <button class="btn btn-primary" (click)="loadSuppliers()" [disabled]="loading">
+      <span *ngIf="loading" class="spinner-border spinner-border-sm"></span>
+      Cargar Proveedores
+    </button>
+  
+    <!-- Barra de Búsqueda -->
+    <div class="input-group w-auto">
+      <input type="text" class="form-control" placeholder="Buscar proveedor" [(ngModel)]="searchTerm" />
+      <button class="btn btn-outline-secondary" (click)="searchSupplier()">Buscar</button>
+    </div>
+  </div>
+  
+
+  
+ 
+  <table class="table table-bordered table-striped">
+    <thead class="table-dark">
+      <tr>
+        <th>ID</th>
+        <th>NIT</th>
+        <th>Nombre</th>
+        <th>Dirección</th>
+        <th>Ciudad</th>
+        <th>Teléfono</th>
+        <th>Email</th>
+        <th>Activo</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let supplier of paginatedSuppliers">
+        <td>{{ supplier.id_suppliers }}</td>
+        <td>{{ supplier.nit }}</td>
+        <td>{{ supplier.name }}</td>
+        <td>{{ supplier.address }}</td>
+        <td>{{ supplier.city }}</td>
+        <td>{{ supplier.phone }}</td>
+        <td>{{ supplier.email }}</td>
+        <td>
+          <div class="form-check form-switch" >
+            <input  class="form-check-input " 
+            type="checkbox" role="switch" 
+            [checked]="supplier.active"
+            (change)="toggleSupplierStatus(supplier)"
+            >
+            
+          </div>
+        </td>
+        <td>
+          <button class="btn btn-warning btn-sm d-block mb-2" (click)="editSupplier(supplier)">Editar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+    <!-- Botones de Paginación -->
+<div class="pagination-controls text-center mt-3">
+  <button class="btn btn-secondary me-2" (click)="prevPage()" [disabled]="currentPage === 1">Anterior</button>
+  <span>Página {{ currentPage }}</span>
+  <button class="btn btn-secondary ms-2" (click)="nextPage()" [disabled]="currentPage * itemsPerPage >= filteredSuppliers.length">Siguiente</button>
+</div>
+<p *ngIf="!loading && suppliers.length === 0" class="text-muted">No hay proveedores disponibles.</p>
+</div>
+  
+  

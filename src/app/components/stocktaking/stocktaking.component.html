@@ -1,0 +1,117 @@
+<div class="container mt-4">
+  <h2 class="text-center mb-4">Inventario de Productos</h2>
+  <div class="d-flex justify-content-between mb-3">
+    <button class="btn btn-outline-primary" (click)="loadProducts()">Actualizar Inventario</button>
+    <button class="btn btn-primary" (click)="openModal()">Ingreso de Nueva Factura</button>
+  </div>
+  
+  <span *ngIf="loading" class="spinner-border text-primary spinner-border-sm"></span>
+
+  <!-- Barra de búsqueda y botones -->
+  <div class="d-flex justify-content-between mb-3">
+    <button class="btn btn-success" (click)="exportToExcel()">Descargar Excel</button>
+    <div class="input-group w-50">
+      <input type="text" class="form-control" placeholder="Buscar producto" [(ngModel)]="searchTerm" />
+      <button class="btn btn-outline-secondary" (click)="searchProduct()">Buscar</button>
+    </div>
+  </div>
+
+  <!-- Tabla de productos -->
+  <div class="table-responsive">
+    <table class="table table-striped table-hover text-center">
+      <thead class="table-dark">
+        <tr>
+          <th>ID</th>
+          <th>Código</th>
+          <th>Producto</th>
+          <th>Descripción</th>
+          <th>Stock</th>
+          <th>Precio Compra</th>
+          <th>Ganancia</th>
+          <th>Precio Unidad</th>
+          <th>Precio Total Stock</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of paginatedProducts">
+          <td>{{product.id_products}}</td>
+          <td>{{product.code}}</td>
+          <td>{{product.name}}</td>
+          <td>{{product.description}}</td>
+          <td>{{product.stock}}</td>
+          <td>{{ product.buy_price }}</td>
+          <td>{{ product.code_earn }}</td>
+          <td>{{product.unit_price | currency}}</td>
+          <td>{{(product.stock * product.unit_price) | currency}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p *ngIf="!loading && products.length === 0" class="text-muted text-center">No hay productos disponibles.</p>
+
+  <!-- Botones de Paginación -->
+  <div class="text-center mt-3">
+    <button class="btn btn-outline-secondary me-2" (click)="prevPage()" [disabled]="currentPage === 1">Anterior</button>
+    <span class="fw-bold">Página {{ currentPage }}</span>
+    <button class="btn btn-outline-secondary ms-2" (click)="nextPage()" [disabled]="currentPage * itemsPerPage >= filteredProducts.length">Siguiente</button>
+  </div>
+</div>
+
+<!-- Modal -->
+<div *ngIf="showModal" class="modal fade show d-block" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Ingreso de Nueva Factura</h5>
+        <button type="button" class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="productCode" class="form-label">Código del Producto:</label>
+          <input id="productCode" type="text" class="form-control" [(ngModel)]="productCode" (input)="checkProduct()" />
+        </div>
+
+        <div *ngIf="existingProduct">
+          <p><strong>Producto:</strong> {{ productName }}</p>
+          <p><strong>Precio Unidad:</strong> {{ unit_price | currency }}</p>
+        </div>
+
+        <div *ngIf="!existingProduct" class="mb-3">
+          
+            <label for="productName" class="form-label">Nombre del Producto:</label>
+            <input id="productName" type="text" class="form-control" [(ngModel)]="productName" />
+          
+
+            <label for="description" class="form-label">Descripción:</label>
+            <input id="description" type="text" class="form-control" [(ngModel)]="description" />
+        
+
+          
+            <label for="brand" class="form-label">Marca:</label>
+            <input id="brand" type="text" class="form-control" [(ngModel)]="brand" />
+          
+
+          <label for="buyPrice" class="form-label">Precio de Compra:</label>
+          <input id="buyPrice" type="number" class="form-control" [(ngModel)]="buy_price" />
+
+          <label for="codeEarn" class="form-label">Ganancia (%):</label>
+          <input id="codeEarn" type="number" class="form-control" [(ngModel)]="code_earn" />
+          
+
+            <label for="taxes_code" class="form-label">Impuesto:</label>
+            <input id="taxes_code" type="text" class="form-control" [(ngModel)]="taxes_code" />
+          
+        </div>
+
+        <div class="mb-3">
+          <label for="quantity" class="form-label">Cantidad:</label>
+          <input id="quantity" type="number" class="form-control" [(ngModel)]="quantity" min="1" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-success" (click)="saveProduct()" [disabled]="!productCode || !quantity || (existingProduct && unit_price <= 0)">Guardar</button>
+        <button class="btn btn-secondary" (click)="closeModal()">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,69 @@
+<div>
+  <div class="d-flex justify-content-between bg-custom p-3">
+    <a class="navbar-brand fw-bold mx-4" routerLink="/">El Santuario 2001</a>
+    <a class="navbar-brand fw-bold mx-3" routerLink="/">
+      <button class="btn btn-bg-custom" type="button">
+        Cerrar seccion <i class="bi bi-person-circle"></i>
+      </button>
+    </a>
+  </div>
+
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid d-flex flex-column">
+     
+
+      <div class="collapse navbar-collapse d-flex justify-content-around" id="navbarNav">
+        <ul class="navbar-nav mb-2 mb-lg-0">
+          <li class="nav-item mx-5 fw-bold">
+            <a class="btn nav-link" routerLink="/home" routerLinkActive="active"
+              >Inicio</a>
+          </li>
+          <li class="nav-item mx-5 fw-bold">
+            <a class="btn nav-link" routerLink="/cash" routerLinkActive="active"
+              >Caja</a
+            >
+          </li>
+
+          <li class="nav-item dropdown fw-bold">
+            <a class="nav-link dropdown-toggle" href="#" id="inventoryDropdown" role="button"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              Inventario
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="inventoryDropdown">
+              <li><a class="dropdown-item" routerLink="/inventory">Gestión de Inventario</a></li>
+              <li><a class="dropdown-item" routerLink="/purchase">Ingreso de Facturas</a></li>
+            </ul>
+          </li>
+
+
+          
+          <li class="nav-item mx-5 fw-bold">
+            <a
+              class="btn nav-link"
+              routerLink="/supplier"
+              routerLinkActive="active"
+              >Proveedores</a
+            >
+          </li>
+          <li class="nav-item mx-5 fw-bold">
+            <a
+              class="btn nav-link"
+              routerLink="/profile"
+              routerLinkActive="active"
+              >Perfil</a
+            >
+          </li>
+          <li class="nav-item mx-5 fw-bold">
+            <a
+              class="btn nav-link"
+              routerLink="/admin"
+              routerLinkActive="active"
+              >Administrador</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</div>
+

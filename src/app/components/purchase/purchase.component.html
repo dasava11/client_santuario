@@ -1,0 +1,93 @@
+<!-- purchase-form.component.html -->
+
+<div class="container mt-4">
+  <h2>Ingreso de Factura</h2>
+
+  <form [formGroup]="purchaseForm" (ngSubmit)="submitPurchase()">
+    <div class="row">
+      <div class="col-md-6">
+        <label>Fecha</label>
+        <input type="date" class="form-control" formControlName="date" />
+      </div>
+
+      <div class="col-md-6">
+        <label>Proveedor</label>
+        <select class="form-control" formControlName="supplier">
+          <option *ngFor="let supplier of suppliers" [value]="supplier.id">
+            {{ supplier.name }}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row mt-3">
+      <div class="col-md-6">
+        <label>Buscar Producto</label>
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="searchTerm"
+          [ngModelOptions]="{ standalone: true }"
+          (input)="filterProducts()"
+          placeholder="Código o nombre del producto"
+        />
+      </div>
+    </div>
+
+    <ul *ngIf="filteredProducts.length > 0" class="list-group mt-2">
+      <li
+        *ngFor="let product of filteredProducts"
+        class="list-group-item"
+        (click)="selectProduct(product)"
+      >
+        {{ product.name }} - {{ product.code }}
+      </li>
+    </ul>
+
+    <h4 class="mt-4">Productos en la Compra</h4>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Producto</th>
+          <th>Cantidad</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of selectedProducts; let i = index">
+          <td>{{ item.name }}</td>
+          <td>
+            <input
+              type="number"
+              class="form-control"
+              [(ngModel)]="item.quantity"
+              [ngModelOptions]="{ standalone: true }"
+              (input)="updateTotals()"
+            />
+          </td>
+          <td>{{ item.price | currency }}</td>
+          <td>{{ item.price * 0.19 | currency }}</td>
+          <td>{{ item.price * item.quantity * 1.19 | currency }}</td>
+          <td>
+            <button class="btn btn-danger" (click)="removeProduct(i)">
+              Eliminar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4 class="mt-4">Resumen de la Compra</h4>
+    <p><strong>Subtotal:</strong> {{ subtotal | currency }}</p>
+    <p><strong>Impuestos:</strong> {{ taxes | currency }}</p>
+    <p><strong>Total:</strong> {{ total | currency }}</p>
+
+    <button
+      type="submit"
+      class="btn btn-success"
+      [disabled]="!purchaseForm.valid || selectedProducts.length === 0"
+    >
+      Confirmar Compra
+    </button>
+  </form>
+</div>
